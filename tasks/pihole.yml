@@ -20,6 +20,18 @@
     owner: pihole
     group: pihole
 
+- name: Generate password hash
+  ansible.builtin.shell: |
+    return=$(echo -n {{ pihole_admin_password }} | sha256sum | sed 's/\s.*$//')
+    return=$(echo -n ${return} | sha256sum | sed 's/\s.*$//')
+    echo ${return}
+  register: pihole_admin_generate_password
+  changed_when: false
+
+- name: Set password hash
+  ansible.builtin.set_fact:
+    pihole_admin_password_hash: "{{ pihole_admin_generate_password.stdout }}"
+
 - name: Ensure setup vars file is on remote
   ansible.builtin.template:
     src: setupVars.conf.j2
