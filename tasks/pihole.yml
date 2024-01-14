@@ -1,11 +1,34 @@
 ---
+- name: Create pihole group
+  ansible.builtin.group:
+    name: pihole
+    state: present
+    gid: 1000
+
+- name: Create pihole user
+  ansible.builtin.user:
+    name: pihole
+    state: present
+    uid: 1000
+    group: pihole
+    shell: /usr/sbin/nologin
+    createhome: false
+
+- name: Ensure Pi-hole folder is present
+  ansible.builtin.file:
+    path: /etc/pihole
+    state: directory
+    mode: "0775"
+    owner: pihole
+    group: pihole
+
 - name: Ensure setup vars file is on remote
   ansible.builtin.template:
     src: setupVars.conf.j2
     dest: /etc/pihole/setupVars.conf
     mode: "0644"
-    owner: root
-    group: root
+    owner: pihole
+    group: pihole
   register: setupVars
 
 - name: Get Pi-hole install script
