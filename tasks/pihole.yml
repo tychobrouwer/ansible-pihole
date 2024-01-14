@@ -1,0 +1,43 @@
+---
+- name: Ensure setup vars file is on remote
+  ansible.builtin.template:
+    src: setupVars.conf.j2
+    dest: /etc/pihole/setupVars.conf
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Get Pi-hole install script
+  ansible.builtin.get_url:
+    url: "{{ pihole_download_url }}"
+    dest: "{{ pihole_install_script }}"
+    force: true
+    mode: "0755"
+
+- name: Ensure Pi-hole is installed
+  block:
+    - name: Try using Pi-hole
+      ansible.builtin.command: pihole --version
+      register: which_pihole
+      changed_when: false
+
+  rescue:
+    - name: No Pi-hole, run install script
+      ansible.builtin.command: "{{ pihole_install_script }} --unattended"
+      failed_when: false
+      changed_when: true
+
+- name: Ensure Pi-hole password is set
+  ansible.builtin.command: "pihole -a -p {{ role_admin_password }}"
+  when: which_pihole is defined and which_pihole is not failed
+  changed_when: true
+
+- name: Start Pi-hole
+  ansible.builtin.command: pihole enable && pihole restartdns
+  changed_when: false
+
+- name: Update Pi-hole
+  ansible.builtin.command: pihole -up
+  register: pihole_update
+  changed_when: pi_update.stdout.find("update available") != -1
+  when: which_pihole is defined and which_pihole is not failed

@@ -1,0 +1,7 @@
+---
+# vars file for pi-hole
+role_unbound_port: 5335
+
+role_root_hints_url: https://www.internic.net/domain/named.root
+role_pihole_download_url: https://install.pi-hole.net
+role_pihole_install_script: /root/pihole-install.sh

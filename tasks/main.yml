@@ -1,0 +1,15 @@
+---
+# tasks file for pi-hole
+- name: Ensure Pi-hole folder is present
+  ansible.builtin.file:
+    path: /etc/pihole
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Install and configure Unbound
+  ansible.builtin.import_tasks: unbound.yml
+
+- name: Install and configure Pi-hole
+  ansible.builtin.import_tasks: pihole.yml
