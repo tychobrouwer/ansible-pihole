@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+
+  roles:
+    - role: ansible-pihole
+      pihole_admin_password: password123

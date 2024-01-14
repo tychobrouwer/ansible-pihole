@@ -5,12 +5,6 @@
       - unbound
     state: present
 
-- name: Ensure unbound is enabled
-  ansible.builtin.service:
-    name: unbound
-    enabled: true
-    state: started
-
 - name: Ensure Unbound config folder is present
   ansible.builtin.file:
     path: /etc/unbound/unbound.conf.d
@@ -28,9 +22,15 @@
     group: root
   notify: Restart unbound
 
+- name: Ensure unbound is enabled
+  ansible.builtin.service:
+    name: unbound
+    enabled: true
+    state: started
+
 - name: Ensure root hints file for unbound exist
   ansible.builtin.get_url:
-    url: "{{ root_hints_url }}"
+    url: "{{ pihole_root_hints_url }}"
     dest: /var/lib/unbound/root.hints
     force: true
     mode: "0644"

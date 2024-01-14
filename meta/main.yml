@@ -1,4 +1,6 @@
 galaxy_info:
+  role_name: pihole
+  namespace: tychobrouwer
   author: Tycho Brouwer
   description: Install and configure Pi-Hole for my servers
 

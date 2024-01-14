@@ -6,6 +6,7 @@
     mode: "0644"
     owner: root
     group: root
+  register: setupVars
 
 - name: Get Pi-hole install script
   ansible.builtin.get_url:
@@ -14,21 +15,17 @@
     force: true
     mode: "0755"
 
-- name: Ensure Pi-hole is installed
-  block:
-    - name: Try using Pi-hole
-      ansible.builtin.command: pihole --version
-      register: which_pihole
-      changed_when: false
+- name: Check if Pi-hole executable exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/pihole
+  register: pihole_install_script_stat
 
-  rescue:
-    - name: No Pi-hole, run install script
-      ansible.builtin.command: "{{ pihole_install_script }} --unattended"
-      failed_when: false
-      changed_when: true
+- name: No Pi-hole, run install script
+  ansible.builtin.command: "{{ pihole_install_script }} --unattended"
+  when: pihole_install_script_stat.stat.exists == false or setupVars.changed == true
 
 - name: Ensure Pi-hole password is set
-  ansible.builtin.command: "pihole -a -p {{ role_admin_password }}"
+  ansible.builtin.command: "pihole -a -p {{ pihole_admin_password }}"
   when: which_pihole is defined and which_pihole is not failed
   changed_when: true
 
