@@ -3,13 +3,11 @@
   ansible.builtin.group:
     name: pihole
     state: present
-    gid: 1000
 
 - name: Create pihole user
   ansible.builtin.user:
     name: pihole
     state: present
-    uid: 1000
     group: pihole
     shell: /usr/sbin/nologin
     createhome: false
