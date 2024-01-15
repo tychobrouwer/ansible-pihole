@@ -23,8 +23,8 @@ Example Playbook
         password: "password123"
       
       roles:
-         - { role: pihole, pihole_admin_password: "{{ password }}" }
-         - { role: pihole, pihole_admin_password: "{{ password }}",
+         - { role: tychobrouwer.pihole, pihole_admin_password: "{{ password }}" }
+         - { role: tychobrouwer.pihole, pihole_admin_password: "{{ password }}",
              pihole_unbound_port: 5353, pihole_root_hints_url: https://www.internic.net/domain/named.root }
 ```
 
