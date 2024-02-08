@@ -23,8 +23,8 @@
 - name: Generate password hash
   ansible.builtin.shell: |
     set -o pipefail
-    return=$(echo -n {{ pihole_admin_password }} | sha256sum | sed 's/\s.*$//')
-    return=$(echo -n ${return} | sha256sum | sed 's/\s.*$//')
+    return=$(echo -n "{{ pihole_admin_password }}" | sha256sum | sed 's/\s.*$//')
+    return=$(echo -n "${return}" | sha256sum | sed 's/\s.*$//')
     echo ${return}
   args:
     executable: /bin/bash
