@@ -26,7 +26,8 @@
     return=$(echo -n {{ pihole_admin_password }} | sha256sum | sed 's/\s.*$//')
     return=$(echo -n ${return} | sha256sum | sed 's/\s.*$//')
     echo ${return}
-  executable: /bin/bash
+  args:
+    executable: /bin/bash
   register: pihole_admin_generate_password
   changed_when: false
 
