@@ -27,6 +27,7 @@
     name: unbound
     enabled: true
     state: started
+  notify: Restart unbound
 
 - name: Ensure root hints file for unbound exist
   ansible.builtin.get_url:

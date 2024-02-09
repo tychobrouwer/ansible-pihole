@@ -60,6 +60,7 @@
   ansible.builtin.command: "{{ pihole_install_script }} --unattended"
   when: not pihole_install_script_stat.stat.exists or setup_vars.changed
   changed_when: true
+  notify: Restart unbound
 
 - name: Ensure Pi-hole password is set
   ansible.builtin.command: pihole -a -p {{ pihole_admin_password }}
