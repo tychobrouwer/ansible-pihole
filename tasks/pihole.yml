@@ -56,7 +56,7 @@
     path: /usr/local/bin/pihole
   register: pihole_install_script_stat
 
-- name: No Pi-hole, run install script
+- name: No Pi-hole, run install script # noqa no-handler
   ansible.builtin.command: "{{ pihole_install_script }} --unattended"
   when: not pihole_install_script_stat.stat.exists or setup_vars.changed
   changed_when: true
