@@ -76,3 +76,15 @@
   register: pihole_update
   changed_when: pi_update.stdout.find("update available") != -1
   when: which_pihole is defined and which_pihole is not failed
+
+- name: Check Pi-hole
+  ansible.builtin.command: pihole status
+  register: pihole_status
+  when: which_pihole is defined and which_pihole is not failed
+  changed_when: false
+
+- name: Restart Pi-hole dns
+  ansible.builtin.command: pihole restartdns
+  when: pihole_status.stdout.find("DNS service is NOT running") != -1
+  changed_when: true
+
