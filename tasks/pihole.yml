@@ -85,6 +85,6 @@
 
 - name: Restart Pi-hole dns
   ansible.builtin.command: pihole restartdns
-  when: pihole_status.stdout.find("DNS service is NOT running") != -1
+  when: '"DNS service is NOT running" in pihole_status.stdout'
   changed_when: true
 
