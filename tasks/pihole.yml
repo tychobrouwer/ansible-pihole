@@ -62,11 +62,6 @@
   changed_when: true
   notify: Restart unbound
 
-- name: Ensure Pi-hole password is set
-  ansible.builtin.command: pihole -a -p {{ pihole_admin_password }}
-  when: which_pihole is defined and which_pihole is not failed
-  changed_when: true
-
 - name: Start Pi-hole
   ansible.builtin.command: pihole enable && pihole restartdns
   changed_when: false
@@ -75,12 +70,11 @@
   ansible.builtin.command: pihole -up
   register: pihole_update
   changed_when: pi_update.stdout.find("update available") != -1
-  when: which_pihole is defined and which_pihole is not failed
+  when: '"Everything is up to date" not in pihole_update.stdout'
 
 - name: Check Pi-hole
   ansible.builtin.command: pihole status
   register: pihole_status
-  when: which_pihole is defined and which_pihole is not failed
   changed_when: false
 
 - name: Restart Pi-hole dns
