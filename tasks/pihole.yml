@@ -80,4 +80,3 @@
 - name: Reboot
   ansible.builtin.reboot:
   when: '"DNS service is NOT running" in pihole_status.stdout'
-
