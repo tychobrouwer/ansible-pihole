@@ -69,8 +69,7 @@
 - name: Update Pi-hole
   ansible.builtin.command: pihole -up
   register: pihole_update
-  changed_when: pi_update.stdout.find("update available") != -1
-  when: '"Everything is up to date" not in pihole_update.stdout'
+  changed_when: '"Everything is up to date" not in pihole_update.stdout'
 
 - name: Check Pi-hole
   ansible.builtin.command: pihole status
