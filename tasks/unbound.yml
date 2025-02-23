@@ -1,8 +1,7 @@
 ---
 - name: Ensure Unbound is installed
   ansible.builtin.package:
-    name:
-      - unbound
+    name: unbound
     state: present
 
 - name: Ensure Unbound config folder is present
@@ -13,7 +12,7 @@
     group: root
     state: directory
 
-- name: Copy unbound config file to remote
+- name: Copy Unbound config file to remote
   ansible.builtin.template:
     src: unbound.conf.j2
     dest: /etc/unbound/unbound.conf.d/pi-hole.conf
@@ -22,17 +21,16 @@
     group: root
   notify: Restart unbound
 
-- name: Ensure unbound is enabled
-  ansible.builtin.service:
-    name: unbound
-    enabled: true
-    state: started
-  notify: Restart unbound
-
-- name: Ensure root hints file for unbound exist
+- name: Ensure root hints file for Unbound exists
   ansible.builtin.get_url:
     url: "{{ pihole_root_hints_url }}"
     dest: /var/lib/unbound/root.hints
     force: true
     mode: "0644"
   notify: Restart unbound
+
+- name: Ensure unbound is enabled
+  ansible.builtin.systemd:
+    name: unbound
+    enabled: true
+    state: started

@@ -1,6 +1,7 @@
 ---
 # handlers file for pi-hole
 - name: Restart unbound
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: unbound
     state: restarted
+    daemon_reload: true
