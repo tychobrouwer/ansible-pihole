@@ -18,14 +18,17 @@ Example Playbook
 ----------------
 
 ```yaml
-    - hosts: servers
-      vars:
-        password: "password123"
-      
-      roles:
-         - { role: tychobrouwer.pihole, pihole_admin_password: "{{ password }}" }
-         - { role: tychobrouwer.pihole, pihole_admin_password: "{{ password }}",
-             pihole_unbound_port: 5353, pihole_root_hints_url: https://www.internic.net/domain/named.root }
+- hosts: servers
+  vars:
+    password: "password123"
+    pihole_admin_password: "{{ password }}"
+  
+  roles:
+    - role: tychobrouwer.pihole
+
+    - role: tychobrouwer.pihole
+      pihole_unbound_port: 5353
+      pihole_root_hints_url: https://www.internic.net/domain/named.root
 ```
 
 License
